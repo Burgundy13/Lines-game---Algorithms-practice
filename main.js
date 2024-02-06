@@ -10,37 +10,61 @@ function selectBall() {
 	if (this.innerHTML !== '') {
 		findAllPossiblePaths(this);
 	} else {
-		alert('Selection must be ball');
+		null;
 	}
 }
 
 function findAllPossiblePaths(selectedBall) {
+	selectedBall.setAttribute('data-id', 'parent');
 	let boxId = parseInt(selectedBall.id);
 	let leftBox = boxes[boxId - 1];
 	let rightBox = boxes[boxId + 1];
 	let topBox = boxes[boxId - 10];
 	let bottomBox = boxes[boxId + 10];
 
+	let possiblePaths = [];
+
 	//left
-	if (boxId % 10 !== 0 && leftBox.innerHTML === '') {
-		leftBox.style.background = '#ddd';
+	if (
+		boxId % 10 !== 0 &&
+		leftBox.innerHTML === '' &&
+		leftBox.getAttribute('data-id') !== 'parent'
+	) {
+		possiblePaths.push(leftBox);
 	}
 
 	//right
-	if (boxId % 10 !== 9 && rightBox.innerHTML === '') {
-		rightBox.style.background = '#ddd';
+	if (
+		boxId % 10 !== 9 &&
+		rightBox.innerHTML === '' &&
+		rightBox.getAttribute('data-id') !== 'parent'
+	) {
+		possiblePaths.push(rightBox);
 	}
 
 	//top
 
-	if (topBox && topBox.innerHTML === '') {
-		topBox.style.background = '#ddd';
+	if (
+		topBox &&
+		topBox.innerHTML === '' &&
+		topBox.getAttribute('data-id') !== 'parent'
+	) {
+		possiblePaths.push(topBox);
 	}
 
 	//bottom
-	if (bottomBox && bottomBox.innerHTML === '') {
-		bottomBox.style.background = '#ddd';
+	if (
+		bottomBox &&
+		bottomBox.innerHTML === '' &&
+		bottomBox.getAttribute('data-id') !== 'parent'
+	) {
+		possiblePaths.push(bottomBox);
 	}
+
+	possiblePaths.forEach((box) => {
+		box.style.background = '#ddd';
+		findAllPossiblePaths(box);
+	});
 }
 
 function makeGrid() {
