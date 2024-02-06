@@ -1,5 +1,8 @@
 let container = document.querySelector('.container');
 let ballColors = ['red', 'green', 'blue', 'yellow', 'pink', 'purple', 'cyan'];
+let selected = 'ball';
+let twoClicks = [];
+let found = false;
 
 makeGrid();
 let boxes = document.querySelectorAll('.box');
@@ -7,10 +10,34 @@ boxes.forEach((box) => box.addEventListener('click', selectBall));
 makeBalls(10);
 
 function selectBall() {
-	if (this.innerHTML !== '') {
-		findAllPossiblePaths(this);
+	if (selected === 'ball') {
+		//from
+		if (this.innerHTML !== '') {
+			selected = null;
+			twoClicks[0] = this;
+		} else {
+			alert('select');
+		}
 	} else {
-		null;
+		//to
+		if (this.innerHTML === '') {
+			selected = 'ball';
+			twoClicks[1] = this;
+			this.classList.add('newPos');
+			findAllPossiblePaths(twoClicks[0]);
+		} else {
+			alert('ball');
+		}
+		if (twoClicks.length === 2 && found) {
+			twoClicks[1].innerHTML = twoClicks[0].innerHTML;
+			twoClicks[0].innerHTML = '';
+			twoClicks.length = 0;
+			resetAll();
+			makeBalls(3);
+		} else {
+			alert('There no free path');
+			resetAll();
+		}
 	}
 }
 
@@ -62,8 +89,20 @@ function findAllPossiblePaths(selectedBall) {
 	}
 
 	possiblePaths.forEach((box) => {
-		box.style.background = '#ddd';
-		findAllPossiblePaths(box);
+		if (!box.classList.contains('newPos')) {
+			findAllPossiblePaths(box);
+		} else {
+			found = true;
+		}
+	});
+}
+
+function resetAll() {
+	found = false;
+	boxes.forEach((box) => {
+		box.style.background = '';
+		box.classList.remove('newPos');
+		box.removeAttribute('data-id');
 	});
 }
 
@@ -97,7 +136,7 @@ function makeBalls(ballNumber) {
 	let randColor = ballColors[rand2];
 	let randBox = boxes[rand];
 	if (randBox.innerHTML === '') {
-		randBox.innerHTML = `<div class="ball" style="background:${randColor}">${ballNumber}</div>`;
+		randBox.innerHTML = `<div class="ball" style="background:${randColor}"></div>`;
 		ballNumber--;
 	}
 
