@@ -34,11 +34,65 @@ function selectBall() {
 			twoClicks.length = 0;
 			resetAll();
 			makeBalls(3);
+			checkWins();
 		} else {
 			alert('There no free path');
 			resetAll();
 		}
 	}
+}
+
+function checkWins() {
+	let lines = [
+		[1, 2, 3, 4],
+		[-1, -2, -3, -4],
+		[10, 20, 30, 40],
+		[-10, -20, -30, -40],
+		[11, 22, 33, 44],
+		[-11, -22, -33, -44],
+		[9, 18, 27, 36],
+		[-9, -18, -27, -36],
+	];
+	boxes.forEach((box) => {
+		let boxId = parseInt(box.id);
+		let boxInner = box.innerHTML;
+		lines.forEach((line) => {
+			let boxOne = boxes[boxId + line[0]];
+			let boxTwo = boxes[boxId + line[1]];
+			let boxThree = boxes[boxId + line[2]];
+			let boxFour = boxes[boxId + line[3]];
+
+			if (
+				boxOne &&
+				boxTwo &&
+				boxThree &&
+				boxFour &&
+				boxInner === boxOne.innerHTML &&
+				boxInner === boxTwo.innerHTML &&
+				boxInner === boxThree.innerHTML &&
+				boxInner === boxFour.innerHTML &&
+				boxInner !== ''
+			) {
+				box.style.background = 'red';
+				boxOne.style.background = 'red';
+				boxTwo.style.background = 'red';
+				boxThree.style.background = 'red';
+				boxFour.style.background = 'red';
+				setTimeout(() => {
+					box.innerHTML = '';
+					boxOne.innerHTML = '';
+					boxTwo.innerHTML = '';
+					boxThree.innerHTML = '';
+					boxFour.innerHTML = '';
+					box.style.background = '';
+					boxOne.style.background = '';
+					boxTwo.style.background = '';
+					boxThree.style.background = '';
+					boxFour.style.background = '';
+				}, 1000);
+			}
+		});
+	});
 }
 
 function findAllPossiblePaths(selectedBall) {
