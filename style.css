@@ -1,0 +1,36 @@
+body,
+html {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+}
+
+.container {
+	width: 500px;
+	height: 500px;
+	margin: 50px auto;
+	border: 2px solid #ddd;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.box {
+	width: 50px;
+	height: 50px;
+	border: 1px solid #999;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ball {
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
